@@ -5,8 +5,6 @@ class Product {
   }
 }
 
-const producto1 = new Product('producto1', 10.56);
-
 class Book extends Product {
   constructor(name, price, author) {
     super(name, price);
@@ -30,7 +28,7 @@ class Basket {
   }
 
   printShoppingInfo() {
-    console.log('one has to pay in total: ' + this.calcTotal());
+    console.log(`one has to pay in total: ${this.calcTotal()}`);
   }
 }
 

@@ -7,7 +7,7 @@ const profesor1 = new Profesor('marcos', 42);
 console.log(profesor1.nombre);
 profesor1.nombre = 'marcos javier';
 Profesor.prototype.soyElProfe = function() {
-  console.log('Soy el profesor ' + this.nombre);
+  console.log(`Soy el profesor ${this.nombre}`);
 };
 profesor1.soyElProfe();
 
