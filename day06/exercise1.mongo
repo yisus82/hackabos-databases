@@ -1,0 +1,52 @@
+// use usermanaged
+db.createCollection("clients")
+db.clients.insert({ "firstName":"John", 
+  "lastName":"West", 
+  "email":"john.west@mail.com", 
+  "phone":"032345432134",
+  "BusinessType": ["Sell", "Sugar", "Drinks"],
+  "Reference":100,
+  "Company":"Coca-Cola"})
+db.clients.drop()
+db.createCollection("clients")
+// mongoimport --db usermanaged --collection clients --jsonArray --drop --file clients.json
+// mongoimport --db usermanaged --collection clients --jsonArray --mode insert --file clients.json
+// mongoimport --db usermanaged --collection clients --jsonArray --mode upsert --upsertFields Id --file clients_upsert.json
+// mongoimport --db usermanaged --collection cities --type csv --headerline --file cities.csv
+// Consultas MongoDB con Condiciones 
+// 1 Encuentra cualquier registro donde Nombre es Tom
+db.clients.find({"Name": "Tom"})
+// 2 Encuentre cualquier registro donde el monto de pago total (Pago.Total) es 400.
+db.clients.find({"Payment.Total": 400})
+// 3 Encuentre cualquier registro donde el precio (Transaction.price) sea mayor que 400.
+db.clients.find({"Transaction.price": {$gt: 400}})
+// 4 Busque cualquier registro donde Note sea nulo o falte la clave.
+db.clients.find({"Note": null})
+// 5 Encuentre cualquier registro donde exista Nota y su valor sea nulo.
+db.clients.find({$and: [{"Note": null}, {"Note": {$exists: true}}]})
+// 6 Encuentra cualquier registro donde no exista la clave de nota.
+db.clients.find({"Note": {$exists: false}})
+// Agregación con MongoDB
+// 1 Calcule el monto total de la transacción sumando Pago. Total en todos los registros.
+
+// 2 Obtenga el precio total por registro sumando los valores de precio en la matriz de Transacción (Transaction.price).
+
+// 3 Calcule los pagos totales (Pago.Total) para cada tipo de pago (Tipo de pago).
+
+// 4 Encuentra la identificación máxima.
+
+// 5 Encuentra el precio máximo (Transaction.price).
+
+// Operaciones CRUD
+// 1 Inserte un registro a continuación.
+
+// 2 Actualizando el nuevo registro insertado arriba. Hacer nombre = ’Registro actualizado’ & Note = ’¡Actualizado!’
+
+// 3 Elimine el registro insertado arriba utilizando Id.
+
+// Creación de usuario
+// 1 Cree un usuario de solo lectura que pueda consultar registros de colecciones de todas las bases de datos.
+
+// 2 Cree un usuario escritor que pueda crear colecciones y realizar operaciones CRUD en cualquier colección.
+
+// 3 Cree un usuario administrado por el usuario que pueda realizar la operación de escritura en la base de datos administrada por el usuario y lea solo para el resto de las bases de datos.
