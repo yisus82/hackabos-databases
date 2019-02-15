@@ -28,25 +28,41 @@ db.clients.find({$and: [{"Note": null}, {"Note": {$exists: true}}]})
 db.clients.find({"Note": {$exists: false}})
 // Agregación con MongoDB
 // 1 Calcule el monto total de la transacción sumando Pago. Total en todos los registros.
-
+db.clients.aggregate({$group: {_id: '', TotalRevenue: { $sum: '$Payment.Total' }}})
 // 2 Obtenga el precio total por registro sumando los valores de precio en la matriz de Transacción (Transaction.price).
-
+db.clients.aggregate([{$project: {revenueTotal: { $sum: "$Transaction.price"}}}])
 // 3 Calcule los pagos totales (Pago.Total) para cada tipo de pago (Tipo de pago).
-
+db.clients.aggregate([{$group: {_id: "$Payment.Type", totalAmount: { $sum: "$Payment.Total" }, count: { $sum: 1 }}}])
 // 4 Encuentra la identificación máxima.
-
+db.clients.aggregate([{$group: {_id: '', maxId: {$max: "$Id"}}}])
 // 5 Encuentra el precio máximo (Transaction.price).
-
+db.transactions.aggregate([{$group: {_id: '', maxPrice: {$max: {$max: "$Transaction.price"}}}}])
 // Operaciones CRUD
 // 1 Inserte un registro a continuación.
-
+db.transactions.insert(
+{
+"Id": 110,
+"Name": "Inserted Record",
+"TransactionId": "tranNew1",
+"Transaction": [
+{
+"ItemId":"c324",
+"price": 456
+},
+{
+"ItemId":"d456",
+"price": 543
+}
+],
+"Subscriber": false,
+"Payment": {
+"Type": "Debit-Card",
+"Total": 999,
+"Success": true
+},
+"Note":'Hello World'
+})
 // 2 Actualizando el nuevo registro insertado arriba. Hacer nombre = ’Registro actualizado’ & Note = ’¡Actualizado!’
-
+db.transactions.update({Id:110},{$set:{Name:'Updated Record',Note:'Updated!'}})
 // 3 Elimine el registro insertado arriba utilizando Id.
-
-// Creación de usuario
-// 1 Cree un usuario de solo lectura que pueda consultar registros de colecciones de todas las bases de datos.
-
-// 2 Cree un usuario escritor que pueda crear colecciones y realizar operaciones CRUD en cualquier colección.
-
-// 3 Cree un usuario administrado por el usuario que pueda realizar la operación de escritura en la base de datos administrada por el usuario y lea solo para el resto de las bases de datos.
+db.transaction.remove({Id:110})
