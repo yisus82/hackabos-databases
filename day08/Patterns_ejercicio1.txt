@@ -1,0 +1,31 @@
+Creación de un generador de cuentas bancarias y clientes
+	Factoria:Banco
+	Clase:Cuenta, Clientes
+	
+
+
+Añadir un prototype de tipo de cuenta en el que se establezca el valor de la comisión por defecto.	
+
+Añadir a la clase Banco un evento EnviarPublicidad
+subscribir al evento de lanzar publicidad a Varios clientes
+funcion en cada cliente :leer publicidad
+
+
+Crear un singleton que genere la misma instancia del banco (la factoría del punto 1)
+
+
+La clase Cuenta tendrá: 
+	-Objeto Cliente
+	-Objeto Banco
+	-Propiedad Saldo
+
+La clase Cliente tendrá::
+	- Lista de Cuentas
+	- Función GetSaldoTotal
+	- Leer publicidad
+	
+ La clase banco	
+	- Nombre
+	- Lista de cuentas
+	- Función LanzaarPublicidad (texto publicidad)
+	- Lista de clientes que aceptan publicidad (observer)
