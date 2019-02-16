@@ -1,0 +1,63 @@
+Batalla estelar
+
+Se quiere emular una batalla entre dos ejercitos de naves espaciales. El pierde la partida quien pierde todas sus naves.
+
+Cada ejercito podrá seleccionar una nave propia. La nave seleccionará un objetivo rival y disparará. 
+La nave 'objetivo' perderá puntos de daño dependiendo de la potencia del  disparo.
+
+Objetos a crear:
+Una clase Nave
+    Propiedades
+        Daño
+        Puntos de vida (Escudo)
+        Nombre o Código
+        Estado (Activo o Destruido) (Solo lectura)
+    Metodos
+        Disparar
+            Selecciona un objetivo
+            Lo llama y le ejecuta recibir un disparo
+        Seleccionar Objetivo
+        Recibir disparo (dano)
+            Se descuenta el daño a los puntos de vida
+Tres clases derivadas de Nave: Nave Clase I, Nave Clase II, Nave Clase III
+    Cada una tendrá caracteristicas distintas (10 disparo, 5 vida) (5 disparo, 10 vida) (8 disparo, 7 vida)  (Opcional)
+Una clase ejercito
+    Nombre
+    ListaNaves
+    Estado o    Informe de las naves
+    Derrotado (s/N)
+Una clase Generador de Naves
+    Metodos
+        CrearEjercito(nombre, cantidad clase I, cantidad clase II, cantidad clase III)
+            El total de 
+        Distribuir el ejercito en el campo de batalla
+        
+Una clase Campo de Batalla
+    Lista de sectores por ejercito (uno para cada ejercito)
+    Control de los turnos (clase principal para el juego)
+    Ejecutar turno(ejercito)
+        Seleecionar una nave que dispara
+        
+        
+    
+Una clase sector:
+    Un array donde se almacenan las naves. Puede ser mismo tamaño que el ejercito (n elementos) 
+    o tener más tamaño y quedar huecos (disparo al aire), opcional 2 y tres dimensiones.
+    
+    Metodos:
+        ObtenerElementoEnPosicion(posicion) (devuelve una nave o null)
+    
+    
+Ejemplo de funcionamiento:
+
+const ejercito1 = generador.CrearEjercito("Rojo",3,5,7);
+const ejercito2 = generador.CrearEjercito("Verde",3,5,7);
+//(si son distintos se generan partidas desiguales, asi que habrá que controlar esto al añadir los ejercitos)
+const campoBatalla = generador.GenerarCampo(ejercito1,ejercito2);
+
+var resultado =campoBatalla.REalizarPartida();
+// Dentro se realizarán los turnos
+// Se visualizaran los disparos
+// Se indica si una nave ha sido destruida: la nave 1 del ejercito rojo ha sido destruida por la nave 3 del ejercito verde
+console.log(resultado);
+// El ejercito rojo ha ganado
