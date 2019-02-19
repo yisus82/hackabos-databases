@@ -1,7 +1,15 @@
 const getRandomPosition = arr => Math.floor(Math.random() * arr.length);
 const getRandomElement = arr => arr[getRandomPosition(arr)];
-const removeElement = (element, arr) =>
-  arr.map(value => (value !== element ? null : value));
+const removeElement = (sectorArmyName, sectorArray) =>
+  sectorArray.map(sector => {
+    if (sector == null) {
+      return null;
+    } else if (sector.army.name === sectorArmyName) {
+      return null;
+    } else {
+      return sector;
+    }
+  });
 const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -27,13 +35,13 @@ class Ship {
   shoot(target) {
     this.selectTarget(target);
     if (target) {
+      console.log(`${this.codeName} shot ${target.codeName}`);
       target.takeDamage(this.damagePoints);
-      console.log('Hit!');
       if (!target.isActive()) {
         console.log(`${target.codeName} destroyed!`);
       }
     } else {
-      console.log('Miss');
+      console.log(`${this.codeName} missed the shot`);
     }
   }
 }
@@ -71,12 +79,12 @@ class Army {
   getShipStatusReport() {
     return this.ships.map(ship => ({
       codeName: ship.codeName,
-      active: ship.isActive(),
+      active: ship.isActive()
     }));
   }
 
   isDefeated() {
-    return this.getShipStatusReport().filter(ship => ship.active) !== [];
+    return this.getShipStatusReport().filter(ship => ship.active).length === 0;
   }
 }
 
@@ -114,8 +122,8 @@ class Battlefield {
   }
 
   switchTurn() {
-    this.turn += 1 % this.armySectors.length;
-    if (this.armySectors[this.turn]) {
+    this.turn = (this.turn + 1) % this.armySectors.length;
+    if (!this.armySectors[this.turn]) {
       this.switchTurn();
     }
   }
@@ -124,7 +132,7 @@ class Battlefield {
     const armySector = this.armySectors[this.turn];
     const ship = armySector.army.getRandomShip();
     let targetArmySector = getRandomElement(this.armySectors);
-    while (targetArmySector === armySector) {
+    while (!targetArmySector || targetArmySector === armySector) {
       targetArmySector = getRandomElement(this.armySectors);
     }
     const target = getRandomElement(
@@ -134,7 +142,7 @@ class Battlefield {
     const targetArmy = targetArmySector.army;
     if (targetArmy.isDefeated()) {
       console.log(`${targetArmy.name} defeated`);
-      this.armySectors = removeElement(targetArmySector, this.armySectors);
+      this.armySectors = removeElement(targetArmy.name, this.armySectors);
       const survivors = this.armySectors.filter(value => value);
       if (survivors.length === 1) {
         return survivors[0].army.name;
@@ -145,9 +153,10 @@ class Battlefield {
   }
 
   playGame() {
-    const winner = this.executeTurn();
+    let winner = this.executeTurn();
     while (!winner) {
       this.switchTurn();
+      winner = this.executeTurn();
     }
     return winner;
   }
@@ -163,7 +172,9 @@ class Generator {
     const ships = [];
     for (let i = 0; i < shipCountArr.length; i++) {
       for (let j = 0; j < shipCountArr[i]; j++) {
-        ships.push(new SHIP_TYPES[i](`${SHIP_TYPES[i].name} #${j + 1}`));
+        ships.push(
+          new SHIP_TYPES[i](`${name} - ${SHIP_TYPES[i].name} #${j + 1}`)
+        );
       }
     }
     return new Army(name, ships);
